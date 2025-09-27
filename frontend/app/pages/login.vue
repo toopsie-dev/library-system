@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    
+
 </script>
 
 <template>
@@ -66,7 +66,7 @@
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
             />
           </label>
-          <button class="btn btn-primary">Login</button>
+          <button class="btn btn-primary mt-2">Login</button>
           <p class="mt-3 text-sm text-center">
             Don’t have an account?
             <NuxtLink to="/register" class="link link-primary"
