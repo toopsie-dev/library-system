@@ -9,4 +9,8 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  typescript: {
+    strict: true,
+    shim: false
+  }
 });
