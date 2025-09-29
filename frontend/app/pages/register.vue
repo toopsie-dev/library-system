@@ -2,21 +2,30 @@
 import { ref } from "vue";
 import { useAuth } from "~/composables/useAuth";
 
-const name = ref("");
-const email = ref("");
-const password = ref("");
-const password_confirmation = ref("");
-const message = ref("");
-
 const { register } = useAuth();
 
+const form: RegisterRequest = reactive({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+});
+const isLoading = ref(false);
+
 const handleRegister = async () => {
-  const res = await register(name.value, email.value, password.value, password_confirmation.value);
-  if (res.success) {
-    message.value = "Registration successful!";
-    window.location.href = "/"; // redirect to dashboard
+  const { name, email, password, password_confirmation } = form;
+  isLoading.value = true;
+
+  const response = await register(name, email, password, password_confirmation);
+  const {success, message} = response;
+
+  if (success) {
+    setTimeout(() => {
+      isLoading.value = false;
+      window.location.href = "/dashboard";
+    }, 3000);
   } else {
-    message.value = res.message;
+    alert(message);
   }
 };
 </script>
@@ -25,7 +34,7 @@ const handleRegister = async () => {
   <div class="min-h-screen flex items-center justify-center bg-base-200">
     <div class="card w-full max-w-sm bg-base-100 shadow-xl">
       <div class="card-body">
-        <form class="flex flex-col gap-5 p-4">
+        <form class="flex flex-col gap-5 p-4" @submit.prevent="handleRegister">
           <h2 class="text-2xl font-bold text-center">Register</h2>
           <!-- Name Input field -->
           <label class="input w-full">
@@ -35,7 +44,7 @@ const handleRegister = async () => {
                 <circle cx="12" cy="7" r="4"></circle>
               </g>
             </svg>
-            <input type="text" required placeholder="Full Name" pattern="[A-Za-z][A-Za-z0-9\-]*" minlength="3"
+            <input type="text" v-model="form.name" required placeholder="Full Name" pattern="[A-Za-z][A-Za-z0-9\-]*" minlength="3"
               maxlength="30" title="Only letters, numbers or dash" />
           </label>
           <!-- Email Input field -->
@@ -46,7 +55,7 @@ const handleRegister = async () => {
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
               </g>
             </svg>
-            <input type="email" placeholder="mail@site.com" required />
+            <input type="email" v-model="form.email" placeholder="mail@site.com" required />
           </label>
           <!-- Password Input field -->
           <label class="input w-full">
@@ -58,7 +67,7 @@ const handleRegister = async () => {
                 <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
               </g>
             </svg>
-            <input type="password" required placeholder="Password" minlength="8"
+            <input type="password" v-model="form.password" required placeholder="Password" minlength="8"
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter" />
           </label>
@@ -72,11 +81,14 @@ const handleRegister = async () => {
                 <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
               </g>
             </svg>
-            <input type="password" required placeholder="Confirm Password" minlength="8"
+            <input type="password" v-model="form.password_confirmation" required placeholder="Confirm Password" minlength="8"
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter" />
           </label>
-          <button class="btn btn-primary">Register</button>
+          <button class="btn btn-primary">
+            <span v-if="isLoading" class="loading loading-spinner loading-md"></span>
+            Register
+          </button>
           <p class="mt-3 text-sm text-center">
             Already have an account?
             <NuxtLink to="/login" class="link link-primary">Login</NuxtLink>
