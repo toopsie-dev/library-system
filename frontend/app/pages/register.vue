@@ -22,7 +22,7 @@ const handleRegister = async () => {
   if (success) {
     setTimeout(() => {
       isLoading.value = false;
-      window.location.href = "/dashboard";
+      navigateTo("/dashboard");
     }, 3000);
   } else {
     alert(message);
