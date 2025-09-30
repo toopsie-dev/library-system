@@ -1,12 +1,39 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useAuth } from '#imports';
 
+const { login } = useAuth();
+
+const isLoading = ref(false);
+
+const form: LoginRequest = reactive({
+  email: "",
+  password: ""
+})
+
+const handleLogin = async () => {
+  const { email, password } = form;
+  isLoading.value = true;
+
+  const response = await login(email, password);
+  const {success, message} = response;
+
+  if (success) {
+    setTimeout(() => {
+      isLoading.value = false;
+      navigateTo("/dashboard");
+    }, 3000);
+  } else {
+    alert(message);
+  }
+}
 </script>
 
 <template>
   <div class="min-h-screen flex items-center justify-center bg-base-200">
     <div class="card w-full max-w-sm bg-base-100 shadow-xl">
       <div class="card-body">
-        <form class="flex flex-col gap-5 p-4">
+        <form class="flex flex-col gap-5 p-4" @submit.prevent="handleLogin">
           <h2 class="text-2xl font-bold text-center">Login</h2>
           <!-- Username Input field -->
           <label class="input w-full">
@@ -32,6 +59,7 @@
               placeholder="Username"
               minlength="3"
               maxlength="30"
+              v-model="form.email"
             />
           </label>
 
@@ -61,9 +89,11 @@
               placeholder="Password"
               minlength="6"
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+              autocomplete="none"
+              v-model="form.password"
             />
           </label>
-          <button class="btn btn-primary mt-2">Login</button>
+          <button class="btn btn-primary mt-2"><span v-if="isLoading" class="loading loading-spinner loading-md"></span>Login</button>
           <p class="mt-3 text-sm text-center">
             Don’t have an account?
             <NuxtLink to="/register" class="link link-primary"
