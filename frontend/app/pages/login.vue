@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuth } from '#imports';
+import { navigateTo } from '#app';
 
 const { login } = useAuth();
-
 const isLoading = ref(false);
 
 const form: LoginRequest = reactive({
   email: "",
   password: ""
 })
+
+definePageMeta({
+  layout: 'dashboard',
+});
 
 const handleLogin = async () => {
   const { email, password } = form;
