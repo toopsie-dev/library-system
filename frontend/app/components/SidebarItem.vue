@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import * as LucideIcons from 'lucide-vue-next';
+
+defineProps<{
+  icon: string;
+  label: string;
+  to?: string;
+}>();
+
+const props = defineProps<{ icon: string; label: string; to?: string }>();
+const iconComponent = (LucideIcons as any)[props.icon];
+</script>
+
 <template>
   <NuxtLink
     v-if="to"
@@ -17,16 +30,3 @@
     <span>{{ label }}</span>
   </button>
 </template>
-
-<script setup lang="ts">
-import * as LucideIcons from 'lucide-vue-next';
-
-defineProps<{
-  icon: string;
-  label: string;
-  to?: string;
-}>();
-
-const props = defineProps<{ icon: string; label: string; to?: string }>();
-const iconComponent = (LucideIcons as any)[props.icon];
-</script>
