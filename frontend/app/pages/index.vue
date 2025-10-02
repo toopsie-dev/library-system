@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const router = useRouter()
+import { onMounted } from 'vue';
+import { navigateTo } from '#app';
 
 onMounted(() => {
-  router.push("/login")
-})
+  navigateTo('/login');
+});
 </script>
-
