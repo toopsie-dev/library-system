@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import { useAuth } from '~/composables/useAuth';
+// import { computed } from 'vue';
+import SidebarItem from './SidebarItem.vue';
+
+const { logout } = useAuth();
+// const userName = computed(() => user.value?.name || 'Guest');
+</script>
+
 <template>
   <aside class="w-64 h-screen bg-base-200 p-4 flex flex-col">
     <!-- Avatar -->
@@ -7,7 +16,8 @@
         alt="User Avatar"
         class="w-20 h-20 rounded-full mb-2"
       />
-      <span class="font-semibold">{{ userName }}</span>
+      <span class="font-semibold">Username</span>
+      <!-- <span class="font-semibold">{{ userName }}</span> -->
     </div>
 
     <!-- Navigation -->
@@ -20,12 +30,3 @@
     </nav>
   </aside>
 </template>
-
-<script setup lang="ts">
-import { useAuth } from '~/composables/useAuth';
-import { computed } from 'vue';
-import SidebarItem from './SidebarItem.vue';
-
-const { user, logout } = useAuth();
-const userName = computed(() => user.value?.name || 'Guest');
-</script>
