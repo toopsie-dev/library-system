@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import Sidebar from '~/components/Sidebar.vue';
+import Header from '~/components/Header.vue';
 </script>
 
 <template>
-  <div class="flex min-h-screen bg-base-100">
-    <!-- Sidebar -->
-    <Sidebar class="w-64 bg-gray-200 p-4" />
+  <!-- Sidebar -->
+  <Sidebar />
 
-    <!-- Main content -->
-    <main class="flex-1 p-6">
+  <!-- Main content -->
+  <div class="flex flex-col ml-64 min-h-screen">
+    <Header />
+    <main class="flex-1 p-6 bg-gray-100">
       <slot />
     </main>
   </div>
